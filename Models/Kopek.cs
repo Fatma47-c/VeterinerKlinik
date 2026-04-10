@@ -2,7 +2,8 @@
 {
     public class Kopek : Hayvan
     {
-        public string Cins { get; set; } = null!;
+        public string Irk { get; set; } = null!;
+        public string Boyut { get; set; } = null!;
 
         public override string SesCikar()
         {

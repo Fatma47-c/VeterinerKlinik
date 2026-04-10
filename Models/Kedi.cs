@@ -4,7 +4,7 @@ namespace VeterinerKlinik.Models
 {
     public class Kedi : Hayvan
     {
-        public string IrkTipi { get; set; } = null!;
+        public string Irk { get; set; } = null!;
 
         public override string SesCikar()
         {

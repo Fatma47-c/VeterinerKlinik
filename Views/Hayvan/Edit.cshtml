@@ -1,0 +1,64 @@
+﻿@model Hayvan
+
+@{
+    ViewData["Title"] = "Hayvan Düzenle";
+}
+
+<h2>Hayvan Düzenle</h2>
+
+<form method="post">
+    <input type="hidden" name="id" value="@Model.Id" />
+
+    <div class="mb-3">
+        <label>Tür</label>
+        <input class="form-control" value="@Model.GetType().Name" readonly />
+    </div>
+
+    <div class="mb-3">
+        <label>Ad</label>
+        <input name="ad" class="form-control" value="@Model.Ad" />
+    </div>
+
+    <div class="mb-3">
+        <label>Yaş</label>
+        <input name="yas" type="number" class="form-control" value="@Model.Yas" />
+    </div>
+
+    <div class="mb-3">
+        <label>Müşteri</label>
+        <select name="musteriId" class="form-select" asp-items="ViewBag.Musteriler"></select>
+    </div>
+
+    @if (Model is Kedi kedi)
+    {
+        <div class="mb-3">
+            <label>Irk</label>
+            <input name="irk" class="form-control" value="@kedi.Irk" />
+        </div>
+    }
+    else if (Model is Kopek kopek)
+    {
+        <div class="mb-3">
+            <label>Irk</label>
+            <input name="irk" class="form-control" value="@kopek.Irk" />
+        </div>
+        <div class="mb-3">
+            <label>Boyut</label>
+            <select name="Boyut" class="form-select">
+                <option value="Küçük" selected="@(kopek.Boyut == "Küçük")">Küçük</option>
+                <option value="Orta" selected="@(kopek.Boyut == "Orta")">Orta</option>
+                <option value="Büyük" selected="@(kopek.Boyut == "Büyük")">Büyük</option>
+            </select>
+        </div>
+    }
+    else if (Model is Kus kus)
+    {
+        <div class="mb-3">
+            <label>Tür Adı</label>
+            <input name="turAdi" class="form-control" value="@kus.TurAdi" />
+        </div>
+    }
+
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+    <a asp-action="Index" class="btn btn-secondary">İptal</a>
+</form>

@@ -2,7 +2,7 @@
 {
     public class Kus : Hayvan
     {
-        public bool KonusabiliyorMu { get; set; }
+        public string TurAdi { get; set; } = null!;
 
         public override string SesCikar()
         {

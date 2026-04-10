@@ -1,0 +1,62 @@
+﻿@model Hayvan
+
+@{
+    ViewData["Title"] = "Hayvan Detay";
+}
+
+<h2>Hayvan Detayı</h2>
+
+<dl class="row">
+    <dt class="col-sm-3">Ad</dt>
+    <dd class="col-sm-9">@Model.Ad</dd>
+
+    <dt class="col-sm-3">Tür</dt>
+    <dd class="col-sm-9">
+        @if (Model is Kedi)
+        {
+            <span class="badge bg-warning">🐱 Kedi</span>
+        }
+        else if (Model is Kopek)
+        {
+
+            <span class="badge bg-info">🐶 Köpek</span>
+        }
+        else if (Model is Kus)
+        {
+
+            <span class="badge bg-success">🐦 Kuş</span>
+        }
+    </dd>
+
+    <dt class="col-sm-3">Yaş</dt>
+    <dd class="col-sm-9">@Model.Yas</dd>
+
+    <dt class="col-sm-3">Müşteri</dt>
+    <dd class="col-sm-9">@Model.Musteri?.Ad</dd>
+
+    <dt class="col-sm-3">Sesi</dt>
+    <dd class="col-sm-9"><strong>@Model.SesCikar()</strong></dd>
+
+    @if (Model is Kedi kedi)
+    {
+        <dt class="col-sm-3">Irk</dt>
+        <dd class="col-sm-9">@kedi.Irk</dd>
+
+    }
+    else if (Model is Kopek kopek)
+    {
+        <dt class="col-sm-3">Irk</dt>
+        <dd class="col-sm-9">@kopek.Irk</dd>
+
+        <dt class="col-sm-3">Boyut</dt>
+        <dd class="col-sm-9">@kopek.Boyut</dd>
+    }
+    else if (Model is Kus kus)
+    {
+        <dt class="col-sm-3">Tür Adı</dt>
+        <dd class="col-sm-9">@kus.TurAdi</dd>
+    }
+</dl>
+
+<a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Düzenle</a>
+<a asp-action="Index" class="btn btn-secondary">Geri Dön</a>

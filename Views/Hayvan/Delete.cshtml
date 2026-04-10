@@ -1,0 +1,34 @@
+﻿@model Hayvan
+
+@{
+    ViewData["Title"] = "Hayvan Sil";
+}
+
+<h2>Hayvanı Sil</h2>
+
+<div class="alert alert-danger">
+    <strong>@Model.Ad</strong> adlı hayvanı silmek istediğinize emin misiniz?
+</div>
+
+<dl class="row">
+    <dt class="col-sm-3">Ad</dt>
+    <dd class="col-sm-9">@Model.Ad</dd>
+
+    <dt class="col-sm-3">Tür</dt>
+    <dd class="col-sm-9">@Model.GetType().Name</dd>
+
+    <dt class="col-sm-3">Yaş</dt>
+    <dd class="col-sm-9">@Model.Yas</dd>
+
+    <dt class="col-sm-3">Müşteri</dt>
+    <dd class="col-sm-9">@Model.Musteri?.Ad</dd>
+
+    <dt class="col-sm-3">Sesi</dt>
+    <dd class="col-sm-9"><strong>@Model.SesCikar()</strong></dd>
+</dl>
+
+<form method="post">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <button type="submit" class="btn btn-danger">Evet, Sil</button>
+    <a asp-action="Index" class="btn btn-secondary">İptal</a>
+</form>

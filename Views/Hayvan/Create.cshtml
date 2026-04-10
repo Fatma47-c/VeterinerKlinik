@@ -1,0 +1,74 @@
+﻿@{
+    ViewData["Title"] = "Yeni Hayvan Ekle";
+}
+
+<h2>Yeni Hayvan Ekle</h2>
+
+<form method="post">
+    <div class="mb-3">
+        <label>Tür Seç</label>
+        <select name="hayvanTuru" id="turSecim" class="form-select" onchange="turGoster()">
+            <option value="">-- Seçin --</option>
+            <option value="Kedi">Kedi</option>
+            <option value="Kopek">Köpek</option>
+            <option value="Kus">Kuş</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label>Ad</label>
+        <input name="ad" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Yaş</label>
+        <input name="yas" type="number" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label>Müşteri</label>
+        <select name="musteriId" class="form-select" asp-items="ViewBag.Musteriler"></select>
+    </div>
+
+    <div id="bolum-irk" style="display:none">
+        <div class="mb-3">
+            <label>Irk</label>
+            <input name="irk" class="form-control" />
+        </div>
+    </div>
+
+    <div id="bolum-kopek" style="display:none">
+        <div class="mb-3">
+            <label>Boyut</label>
+            <select name="boyut" class="form-select">
+                <option>Küçük</option>
+                <option>Orta</option>
+                <option>Büyük</option>
+            </select>
+        </div>
+    </div>
+
+    <div id="bolum-kus" style="display:none">
+        <div class="mb-3">
+            <label>Tür Adı</label>
+            <input name="turAdi" class="form-control" />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+    <a asp-action="Index" class="btn btn-secondary">İptal</a>
+</form>
+
+<script>
+    function turGoster() {
+        const tur = document.getElementById("turSecim").value;
+        document.getElementById("bolum-irk").style.display =
+            (tur === "Kedi" || tur === "Kopek") ? "block" : "none";
+        document.getElementById("bolum-kedi").style.display =
+            tur === "Kedi" ? "block" : "none";
+        document.getElementById("bolum-kopek").style.display =
+            tur === "Kopek" ? "block" : "none";
+        document.getElementById("bolum-kus").style.display =
+            tur === "Kus" ? "block" : "none";
+    }
+</script>
