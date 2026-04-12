@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VeterinerKlinik.Models;
 
@@ -11,9 +12,11 @@ using VeterinerKlinik.Models;
 namespace VeterinerKlinik.Migrations
 {
     [DbContext(typeof(VeterinerKlinikContext))]
-    partial class VeterinerKlinikContextModelSnapshot : ModelSnapshot
+    [Migration("20260410214744_RandevuGuncelle")]
+    partial class RandevuGuncelle
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,11 +40,6 @@ namespace VeterinerKlinik.Migrations
                     b.Property<string>("Cins")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("HayvanTipi")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
-
                     b.Property<string>("Kategori")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -60,10 +58,6 @@ namespace VeterinerKlinik.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Hayvanlar");
-
-                    b.HasDiscriminator<string>("HayvanTipi").HasValue("Hayvan");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("VeterinerKlinik.Models.Muayene", b =>
@@ -105,31 +99,28 @@ namespace VeterinerKlinik.Migrations
                     b.Property<string>("Aciklama")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Hastalik")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("HayvanCinsi")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("HayvanTuru")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("MusteriAdi")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Tarih")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Tedavi")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Telefon")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal?>("Ucret")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("VeterinerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VeterinerNd")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -167,45 +158,24 @@ namespace VeterinerKlinik.Migrations
                         new
                         {
                             Id = 1,
-                            Ad = "Uzm. Vet. Hek. Selin",
+                            Ad = "Uzm.Vet.Hek. Selin",
                             Soyad = "Yılmaz",
-                            UzmanlikAlani = "Evcil Hayvanlar"
+                            UzmanlikAlani = "Küçük Hayvanları"
                         },
                         new
                         {
                             Id = 2,
-                            Ad = "Vet. Hek. Ahmet",
+                            Ad = "Vet.Hek. Ahmet",
                             Soyad = "Demir",
                             UzmanlikAlani = "Çiftlik Hayvanları"
                         },
                         new
                         {
                             Id = 3,
-                            Ad = "Dr. Med. Vet. Murat",
+                            Ad = "Dr.Med.Vet. Murat",
                             Soyad = "Aydın",
-                            UzmanlikAlani = "Egzotik Hayvanlar"
+                            UzmanlikAlani = "Egzotik Hayvanları"
                         });
-                });
-
-            modelBuilder.Entity("VeterinerKlinik.Models.CiftlikHayvani", b =>
-                {
-                    b.HasBaseType("VeterinerKlinik.Models.Hayvan");
-
-                    b.HasDiscriminator().HasValue("Çiftlik");
-                });
-
-            modelBuilder.Entity("VeterinerKlinik.Models.EgzotikHayvan", b =>
-                {
-                    b.HasBaseType("VeterinerKlinik.Models.Hayvan");
-
-                    b.HasDiscriminator().HasValue("Egzotik");
-                });
-
-            modelBuilder.Entity("VeterinerKlinik.Models.EvcilHayvan", b =>
-                {
-                    b.HasBaseType("VeterinerKlinik.Models.Hayvan");
-
-                    b.HasDiscriminator().HasValue("Evcil");
                 });
 
             modelBuilder.Entity("VeterinerKlinik.Models.Muayene", b =>

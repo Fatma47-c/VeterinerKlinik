@@ -1,4 +1,4 @@
-﻿@model Hayvan
+﻿@model VeterinerKlinik.Models.Hayvan
 
 @{
     ViewData["Title"] = "Hayvan Düzenle";
@@ -6,59 +6,114 @@
 
 <h2>Hayvan Düzenle</h2>
 
-<form method="post">
-    <input type="hidden" name="id" value="@Model.Id" />
+<form method="post" asp-action="Edit">
+    <input type="hidden" name="Id" value="@Model.Id" />
 
     <div class="mb-3">
-        <label>Tür</label>
-        <input class="form-control" value="@Model.GetType().Name" readonly />
+        <label>Müşteri Adı</label>
+        <input name="MusteriAdi" class="form-control" value="@Model.MusteriAdi" required />
     </div>
 
     <div class="mb-3">
-        <label>Ad</label>
-        <input name="ad" class="form-control" value="@Model.Ad" />
+        <label>Hayvan Adı</label>
+        <input name="Ad" class="form-control" value="@Model.Ad" required />
     </div>
 
     <div class="mb-3">
         <label>Yaş</label>
-        <input name="yas" type="number" class="form-control" value="@Model.Yas" />
+        <input name="Yas" type="number" class="form-control" value="@Model.Yas" required />
     </div>
 
     <div class="mb-3">
-        <label>Müşteri</label>
-        <select name="musteriId" class="form-select" asp-items="ViewBag.Musteriler"></select>
+        <label>Kategori</label>
+        <select name="Kategori" id="kategoriSecim" class="form-select" onchange="kategoriGoster()">
+            <option value="">-- Seçin --</option>
+            <option value="Evcil" selected="@(Model.Kategori == "Evcil")">Evcil</option>
+            <option value="Çiftlik" selected="@(Model.Kategori == "Çiftlik")">Çiftlik</option>
+            <option value="Egzotik" selected="@(Model.Kategori == "Egzotik")">Egzotik</option>
+        </select>
     </div>
 
-    @if (Model is Kedi kedi)
-    {
-        <div class="mb-3">
-            <label>Irk</label>
-            <input name="irk" class="form-control" value="@kedi.Irk" />
-        </div>
-    }
-    else if (Model is Kopek kopek)
-    {
-        <div class="mb-3">
-            <label>Irk</label>
-            <input name="irk" class="form-control" value="@kopek.Irk" />
-        </div>
-        <div class="mb-3">
-            <label>Boyut</label>
-            <select name="Boyut" class="form-select">
-                <option value="Küçük" selected="@(kopek.Boyut == "Küçük")">Küçük</option>
-                <option value="Orta" selected="@(kopek.Boyut == "Orta")">Orta</option>
-                <option value="Büyük" selected="@(kopek.Boyut == "Büyük")">Büyük</option>
-            </select>
-        </div>
-    }
-    else if (Model is Kus kus)
-    {
-        <div class="mb-3">
-            <label>Tür Adı</label>
-            <input name="turAdi" class="form-control" value="@kus.TurAdi" />
-        </div>
-    }
+    <div class="mb-3" id="bolum-tur">
+        <label>Tür</label>
+        <select name="Tur" id="turSecim" class="form-select" onchange="cinsGoster()">
+            <option value="">-- Seçin --</option>
+        </select>
+    </div>
+
+    <div class="mb-3" id="bolum-cins">
+        <label>Cins</label>
+        <select name="Cins" id="cinsSecim" class="form-select">
+            <option value="">-- Seçin --</option>
+        </select>
+    </div>
 
     <button type="submit" class="btn btn-primary">Kaydet</button>
     <a asp-action="Index" class="btn btn-secondary">İptal</a>
 </form>
+
+<script>
+const turler = {
+    "Evcil":   ["Kedi", "Köpek", "Kuş"],
+    "Çiftlik": ["Tavuk", "İnek", "Keçi"],
+    "Egzotik": ["Yılan", "Maymun", "Balık", "Van Gölü Canavarı"]
+};
+
+    const cinsler = {
+            "Kedi":   ["Bengal", "Ragdoll", "Van Kedisi"],
+            "Köpek":  ["Border Collie", "Labrador", "Alman Çoban Köpeği"],
+            "Kuş":    ["Muhabbet Kuşu", "Sultan Papağanı", "Kanarya"],
+            "Tavuk":  ["Brahma", "Leghorn", "Sultan Tavuğu"],
+            "İnek":   ["Jersey", "Simmental", "Angus"],
+            "Keçi":   ["Saanen", "Ankara Keçisi", "Boer"],
+            "Yılan":  ["Kara Mamba", "Mısır Yılanı", "Kral Piton"],
+            "Maymun": ["Makak", "Capuchin", "Marmoset"],
+            "Balık":  ["Silver Arowana", "Koi", "Beta"],
+            "Van Gölü Canavarı": []
+        };
+
+const mevcutTur = "@Model.Tur";
+const mevcutCins = "@Model.Cins";
+
+function kategoriGoster() {
+    const kategori = document.getElementById("kategoriSecim").value;
+    const turSelect = document.getElementById("turSecim");
+    const cinsSelect = document.getElementById("cinsSecim");
+
+    turSelect.innerHTML = '<option value="">-- Seçin --</option>';
+    cinsSelect.innerHTML = '<option value="">-- Seçin --</option>';
+
+    if (kategori && turler[kategori]) {
+        turler[kategori].forEach(t => {
+            const opt = document.createElement("option");
+            opt.value = t;
+            opt.text = t;
+            if (t === mevcutTur) opt.selected = true;
+            turSelect.appendChild(opt);
+        });
+    }
+
+    if (mevcutTur) cinsGoster();
+}
+
+function cinsGoster() {
+    const tur = document.getElementById("turSecim").value;
+    const cinsSelect = document.getElementById("cinsSecim");
+
+    cinsSelect.innerHTML = '<option value="">-- Seçin --</option>';
+
+    if (tur && cinsler[tur]) {
+        cinsler[tur].forEach(c => {
+            const opt = document.createElement("option");
+            opt.value = c;
+            opt.text = c;
+            if (c === mevcutCins) opt.selected = true;
+            cinsSelect.appendChild(opt);
+        });
+    }
+}
+
+window.onload = function() {
+    kategoriGoster();
+};
+</script>

@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using VeterinerKlinik.Data;
 using VeterinerKlinik.Models;
 
 namespace VeterinerKlinik.Controllers
@@ -17,46 +15,42 @@ namespace VeterinerKlinik.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var hayvanlar = await _context.Hayvanlar
-                .Include(h => h.Musteri)
-                .ToListAsync();
+            var hayvanlar = await _context.Hayvanlar.ToListAsync();
             return View(hayvanlar);
         }
 
-
         public IActionResult Create()
         {
-            ViewBag.Musteriler = new SelectList(_context.Musteriler, "Id", "Ad");
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(string hayvanTuru, string ad,
-            int yas, int musteriId, string irk, string boyut,
-            bool tuyluMu, string turAdi, bool konusabilirMi)
+        public async Task<IActionResult> Create(string kategori, string ad, int yas,
+            string tur, string? cins, string musteriAdi)
         {
-            Hayvan hayvan = hayvanTuru switch
+            Hayvan hayvan = kategori switch
             {
-                "Kopek" => new Kopek { Irk = irk, Boyut = boyut },
-                _ => throw new Exception("Geçersiz tür")
+                "Evcil" => new EvcilHayvan(),
+                "Çiftlik" => new CiftlikHayvani(),
+                "Egzotik" => new EgzotikHayvan(),
+                _ => throw new Exception("Geçersiz kategori")
             };
 
             hayvan.Ad = ad;
             hayvan.Yas = yas;
-            hayvan.MusteriId = musteriId;
+            hayvan.Kategori = kategori;
+            hayvan.Tur = tur;
+            hayvan.Cins = cins;
+            hayvan.MusteriAdi = musteriAdi;
 
             _context.Hayvanlar.Add(hayvan);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        
         public async Task<IActionResult> Details(int id)
         {
-            var hayvan = await _context.Hayvanlar
-                .Include(h => h.Musteri)
-                .FirstOrDefaultAsync(h => h.Id == id);
-
+            var hayvan = await _context.Hayvanlar.FindAsync(id);
             if (hayvan == null) return NotFound();
             return View(hayvan);
         }
@@ -65,33 +59,30 @@ namespace VeterinerKlinik.Controllers
         {
             var hayvan = await _context.Hayvanlar.FindAsync(id);
             if (hayvan == null) return NotFound();
-            ViewBag.Musteriler = new SelectList(_context.Musteriler, "Id", "Ad", hayvan.MusteriId);
             return View(hayvan);
         }
 
         [HttpPost]
         public async Task<IActionResult> Edit(int id, string ad, int yas,
-            int musteriId, string irk, string boyut,
-            bool tuyluMu, string turAdi, bool konusabilirMi)
+            string tur, string? cins, string musteriAdi)
         {
             var hayvan = await _context.Hayvanlar.FindAsync(id);
             if (hayvan == null) return NotFound();
 
             hayvan.Ad = ad;
             hayvan.Yas = yas;
-            hayvan.MusteriId = musteriId;
+            hayvan.Tur = tur;
+            hayvan.Cins = cins;
+            hayvan.MusteriAdi = musteriAdi;
 
-            if (hayvan is Kopek kopek) { kopek.Irk = irk; kopek.Boyut = boyut; }
-
+            _context.Update(hayvan);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Delete(int id)
         {
-            var hayvan = await _context.Hayvanlar
-                .Include(h => h.Musteri)
-                .FirstOrDefaultAsync(h => h.Id == id);
+            var hayvan = await _context.Hayvanlar.FindAsync(id);
             if (hayvan == null) return NotFound();
             return View(hayvan);
         }
@@ -100,10 +91,11 @@ namespace VeterinerKlinik.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var hayvan = await _context.Hayvanlar.FindAsync(id);
-            if (hayvan == null) return NotFound();
-
-            _context.Hayvanlar.Remove(hayvan);
-            await _context.SaveChangesAsync();
+            if (hayvan != null)
+            {
+                _context.Hayvanlar.Remove(hayvan);
+                await _context.SaveChangesAsync();
+            }
             return RedirectToAction(nameof(Index));
         }
     }

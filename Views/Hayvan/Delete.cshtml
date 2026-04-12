@@ -1,4 +1,4 @@
-﻿@model Hayvan
+﻿@model VeterinerKlinik.Models.Hayvan
 
 @{
     ViewData["Title"] = "Hayvan Sil";
@@ -14,17 +14,11 @@
     <dt class="col-sm-3">Ad</dt>
     <dd class="col-sm-9">@Model.Ad</dd>
 
+    <dt class="col-sm-3">Kategori</dt>
+    <dd class="col-sm-9">@Model.Kategori</dd>
+
     <dt class="col-sm-3">Tür</dt>
-    <dd class="col-sm-9">@Model.GetType().Name</dd>
-
-    <dt class="col-sm-3">Yaş</dt>
-    <dd class="col-sm-9">@Model.Yas</dd>
-
-    <dt class="col-sm-3">Müşteri</dt>
-    <dd class="col-sm-9">@Model.Musteri?.Ad</dd>
-
-    <dt class="col-sm-3">Sesi</dt>
-    <dd class="col-sm-9"><strong>@Model.SesCikar()</strong></dd>
+    <dd class="col-sm-9">@Model.Tur</dd>
 </dl>
 
 <form method="post">

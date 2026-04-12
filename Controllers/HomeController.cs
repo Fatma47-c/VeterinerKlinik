@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using VeterinerKlinik.Models;
 
 namespace VeterinerKlinik.Controllers
@@ -7,15 +8,21 @@ namespace VeterinerKlinik.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly VeterinerKlinikContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, VeterinerKlinikContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var randevular = await _context.Randevular
+                .Include(r => r.Veteriner)
+                .OrderByDescending(r => r.Tarih)
+                .ToListAsync();
+            return View(randevular);
         }
 
         public IActionResult Privacy()

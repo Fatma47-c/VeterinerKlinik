@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VeterinerKlinik.Models;
 
@@ -11,9 +12,11 @@ using VeterinerKlinik.Models;
 namespace VeterinerKlinik.Migrations
 {
     [DbContext(typeof(VeterinerKlinikContext))]
-    partial class VeterinerKlinikContextModelSnapshot : ModelSnapshot
+    [Migration("20260410210324_IlkMigration")]
+    partial class IlkMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,31 @@ namespace VeterinerKlinik.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Musteri", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Ad")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Soyad")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Telefon")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Musteriler");
+                });
 
             modelBuilder.Entity("VeterinerKlinik.Models.Hayvan", b =>
                 {
@@ -37,11 +65,6 @@ namespace VeterinerKlinik.Migrations
                     b.Property<string>("Cins")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("HayvanTipi")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
-
                     b.Property<string>("Kategori")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -49,6 +72,9 @@ namespace VeterinerKlinik.Migrations
                     b.Property<string>("MusteriAdi")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("MusteriId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Tur")
                         .IsRequired()
@@ -59,11 +85,9 @@ namespace VeterinerKlinik.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("MusteriId");
+
                     b.ToTable("Hayvanlar");
-
-                    b.HasDiscriminator<string>("HayvanTipi").HasValue("Hayvan");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("VeterinerKlinik.Models.Muayene", b =>
@@ -87,9 +111,14 @@ namespace VeterinerKlinik.Migrations
                     b.Property<decimal>("Ucret")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int?>("VeterinerId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("HayvanId");
+
+                    b.HasIndex("VeterinerId");
 
                     b.ToTable("Muayeneler");
                 });
@@ -103,36 +132,21 @@ namespace VeterinerKlinik.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Aciklama")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Hastalik")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("HayvanCinsi")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("HayvanTuru")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MusteriAdi")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("HayvanId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Tarih")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Tedavi")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Telefon")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal?>("Ucret")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("VeterinerId")
+                    b.Property<int?>("VeterinerId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("HayvanId");
 
                     b.HasIndex("VeterinerId");
 
@@ -162,50 +176,13 @@ namespace VeterinerKlinik.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Veterinerler");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Ad = "Uzm. Vet. Hek. Selin",
-                            Soyad = "Yılmaz",
-                            UzmanlikAlani = "Evcil Hayvanlar"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Ad = "Vet. Hek. Ahmet",
-                            Soyad = "Demir",
-                            UzmanlikAlani = "Çiftlik Hayvanları"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Ad = "Dr. Med. Vet. Murat",
-                            Soyad = "Aydın",
-                            UzmanlikAlani = "Egzotik Hayvanlar"
-                        });
                 });
 
-            modelBuilder.Entity("VeterinerKlinik.Models.CiftlikHayvani", b =>
+            modelBuilder.Entity("VeterinerKlinik.Models.Hayvan", b =>
                 {
-                    b.HasBaseType("VeterinerKlinik.Models.Hayvan");
-
-                    b.HasDiscriminator().HasValue("Çiftlik");
-                });
-
-            modelBuilder.Entity("VeterinerKlinik.Models.EgzotikHayvan", b =>
-                {
-                    b.HasBaseType("VeterinerKlinik.Models.Hayvan");
-
-                    b.HasDiscriminator().HasValue("Egzotik");
-                });
-
-            modelBuilder.Entity("VeterinerKlinik.Models.EvcilHayvan", b =>
-                {
-                    b.HasBaseType("VeterinerKlinik.Models.Hayvan");
-
-                    b.HasDiscriminator().HasValue("Evcil");
+                    b.HasOne("Musteri", null)
+                        .WithMany("Hayvanlar")
+                        .HasForeignKey("MusteriId");
                 });
 
             modelBuilder.Entity("VeterinerKlinik.Models.Muayene", b =>
@@ -216,22 +193,37 @@ namespace VeterinerKlinik.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("VeterinerKlinik.Models.Veteriner", null)
+                        .WithMany("Muayeneler")
+                        .HasForeignKey("VeterinerId");
+
                     b.Navigation("Hayvan");
                 });
 
             modelBuilder.Entity("VeterinerKlinik.Models.Randevu", b =>
                 {
-                    b.HasOne("VeterinerKlinik.Models.Veteriner", "Veteriner")
-                        .WithMany("Randevular")
-                        .HasForeignKey("VeterinerId")
+                    b.HasOne("VeterinerKlinik.Models.Hayvan", "Hayvan")
+                        .WithMany()
+                        .HasForeignKey("HayvanId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Veteriner");
+                    b.HasOne("VeterinerKlinik.Models.Veteriner", null)
+                        .WithMany("Randevular")
+                        .HasForeignKey("VeterinerId");
+
+                    b.Navigation("Hayvan");
+                });
+
+            modelBuilder.Entity("Musteri", b =>
+                {
+                    b.Navigation("Hayvanlar");
                 });
 
             modelBuilder.Entity("VeterinerKlinik.Models.Veteriner", b =>
                 {
+                    b.Navigation("Muayeneler");
+
                     b.Navigation("Randevular");
                 });
 #pragma warning restore 612, 618

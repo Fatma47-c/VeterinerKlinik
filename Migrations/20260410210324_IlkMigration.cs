@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace VeterinerKlinik.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class IlkMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -47,12 +47,13 @@ namespace VeterinerKlinik.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Isim = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MusteriId = table.Column<int>(type: "int", nullable: false),
-                    HayvanTipi = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false),
-                    IrkTipi = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Ad = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Yas = table.Column<int>(type: "int", nullable: false),
+                    Kategori = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Tur = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Cins = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    KonusabiliyorMu = table.Column<bool>(type: "bit", nullable: true)
+                    MusteriAdi = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    MusteriId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -61,8 +62,7 @@ namespace VeterinerKlinik.Migrations
                         name: "FK_Hayvanlar_Musteriler_MusteriId",
                         column: x => x.MusteriId,
                         principalTable: "Musteriler",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(

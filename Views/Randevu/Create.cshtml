@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Yeni Hayvan Ekle";
+    ViewData["Title"] = "Yeni Randevu";
 }
 
 <div class="container mt-4">
@@ -7,32 +7,31 @@
         <div class="col-md-7">
             <div class="card shadow border-0">
                 <div class="card-header bg-success text-white text-center py-3">
-                    <h4 class="mb-0">🐾 Yeni Hayvan Ekle</h4>
+                    <h4 class="mb-0">📅 Yeni Randevu Oluştur</h4>
                 </div>
                 <div class="card-body p-4">
                     <form method="post" asp-action="Create">
 
                         <div class="mb-3">
                             <label class="form-label fw-bold">👤 Müşteri Adı</label>
-                            <input name="musteriAdi" class="form-control" required autocomplete="off"
-                                   placeholder="Müşteri adını giriniz" />
+                            <input name="MusteriAdi" class="form-control" required autocomplete="off"
+                                   placeholder="Adınızı giriniz" />
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label fw-bold">🐾 Hayvan Adı</label>
-                            <input name="ad" class="form-control" required autocomplete="off"
-                                   placeholder="Hayvan adını giriniz" />
+                            <label class="form-label fw-bold">📞 Telefon</label>
+                            <input name="Telefon" class="form-control" maxlength="10" required
+                                   placeholder="5XXXXXXXXX" autocomplete="off"
+                                   oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+                            <div class="form-text text-muted">0 girmeden 10 haneli giriniz. Örnek: 5321234567</div>
+                            <div class="form-text text-danger" id="telefonHata" style="display:none">
+                                Telefon numarası 10 haneli ve sadece rakam olmalıdır.
+                            </div>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label fw-bold">🎂 Yaş</label>
-                            <input name="yas" type="number" class="form-control" required
-                                   placeholder="Yaş giriniz" min="0" max="100" />
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">📂 Kategori</label>
-                            <select name="kategori" id="kategoriSecim" class="form-select" onchange="kategoriGoster()">
+                            <label class="form-label fw-bold">🐾 Kategori</label>
+                            <select id="kategoriSecim" class="form-select" onchange="kategoriGoster()">
                                 <option value="">-- Seçin --</option>
                                 <option value="Evcil">🏠 Evcil</option>
                                 <option value="Çiftlik">🌾 Çiftlik</option>
@@ -42,16 +41,43 @@
 
                         <div class="mb-3" id="bolum-tur" style="display:none">
                             <label class="form-label fw-bold">🔍 Hayvan Türü</label>
-                            <select name="tur" id="turSecim" class="form-select" onchange="cinsGoster()">
+                            <select name="HayvanTuru" id="turSecim" class="form-select" onchange="cinsGoster()" required>
                                 <option value="">-- Seçin --</option>
                             </select>
                         </div>
 
                         <div class="mb-3" id="bolum-cins" style="display:none">
                             <label class="form-label fw-bold">🧬 Hayvan Cinsi</label>
-                            <select name="cins" id="cinsSecim" class="form-select">
+                            <select name="HayvanCinsi" id="cinsSecim" class="form-select">
                                 <option value="">-- Seçin --</option>
                             </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">📆 Randevu Tarih ve Saati</label>
+                            <div class="form-text text-muted mb-1">Kliniğe gelmek istediğiniz tarih ve saati seçiniz.</div>
+                            <input name="Tarih" type="datetime-local" class="form-control"
+                                   id="tarihInput" required />
+                            <div class="form-text text-danger" id="tarihHata" style="display:none">
+                                Geçmiş tarih seçilemez.
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">👨‍⚕️ Veteriner</label>
+                            <select name="VeterinerId" class="form-select" required>
+                                <option value="">-- Seçin --</option>
+                                @foreach (var v in ViewBag.Veterinerler)
+                                {
+                                    <option value="@v.Id">@v.Ad @v.Soyad - @v.UzmanlikAlani</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">📝 Açıklama</label>
+                            <textarea name="Aciklama" class="form-control" rows="3"
+                                      placeholder="Ek bilgi girebilirsiniz..."></textarea>
                         </div>
 
                         <div class="d-flex gap-2 mt-3">
@@ -130,4 +156,34 @@
             document.getElementById("bolum-cins").style.display = "none";
         }
     }
+
+    const tarihInput = document.getElementById("tarihInput");
+    const simdi = new Date();
+    const pad = n => String(n).padStart(2, "0");
+    const minTarih = `${simdi.getFullYear()}-${pad(simdi.getMonth()+1)}-${pad(simdi.getDate())}T${pad(simdi.getHours())}:${pad(simdi.getMinutes())}`;
+    tarihInput.min = minTarih;
+
+    document.querySelector("form").addEventListener("submit", function(e) {
+        let gecerli = true;
+
+        const telefon = document.querySelector("[name='Telefon']").value;
+        const telefonHata = document.getElementById("telefonHata");
+        if (!/^[0-9]{10}$/.test(telefon)) {
+            telefonHata.style.display = "block";
+            gecerli = false;
+        } else {
+            telefonHata.style.display = "none";
+        }
+
+        const tarih = new Date(tarihInput.value);
+        const tarihHata = document.getElementById("tarihHata");
+        if (tarih < new Date()) {
+            tarihHata.style.display = "block";
+            gecerli = false;
+        } else {
+            tarihHata.style.display = "none";
+        }
+
+        if (!gecerli) e.preventDefault();
+    });
 </script>

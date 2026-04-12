@@ -1,1 +1,101 @@
-﻿
+﻿@model List<VeterinerKlinik.Models.Randevu>
+
+@{
+    ViewData["Title"] = "Ana Sayfa";
+    var bugunRandevular = Model.Count(r => r.Tarih.Date == DateTime.Today);
+    var toplamRandevu = Model.Count;
+}
+
+<div class="text-center py-4 mb-4">
+    <h1 class="fw-bold">🐾 Veteriner Kliniğine Hoş Geldiniz</h1>
+    <p class="text-muted fs-5">"Dostlarınızın sağlığı bizim önceliğimiz"</p>
+</div>
+
+<div class="row text-center mb-4">
+    <div class="col-md-6">
+        <div class="card shadow border-0 py-3" style="border-radius:16px; background: linear-gradient(135deg, #78c2ad, #56a08a);">
+            <div class="card-body">
+                <h2 class="text-white fw-bold">@toplamRandevu</h2>
+                <p class="text-white mb-0">📅 Toplam Randevu</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow border-0 py-3" style="border-radius:16px; background: linear-gradient(135deg, #56a08a, #3d8b72);">
+            <div class="card-body">
+                <h2 class="text-white fw-bold">@bugunRandevular</h2>
+                <p class="text-white mb-0">🌟 Bugünkü Randevular</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h4 class="mb-3">📋 Randevular</h4>
+
+@if (Model.Count == 0)
+{
+    <div class="alert alert-info">Henüz randevu bulunmamaktadır.</div>
+}
+else
+{
+    <div class="card shadow border-0" style="border-radius:16px;">
+        <div class="card-body p-0">
+            <table class="table table-bordered table-hover mb-0" style="border-radius:16px; overflow:hidden;">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Tarih</th>
+                        <th>Müşteri Adı</th>
+                        <th>Hayvan Türü</th>
+                        <th>Hayvan Cinsi</th>
+                        <th>Veteriner</th>
+                        <th>Teşhis</th>
+                        <th>Tedavi</th>
+                        <th>Ücret</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var r in Model)
+                    {
+                        <tr>
+                            <td>@r.Tarih.ToString("dd.MM.yyyy HH:mm")</td>
+                            <td>@r.MusteriAdi</td>
+                            <td>@r.HayvanTuru</td>
+                            <td>@r.HayvanCinsi</td>
+                            <td>@r.Veteriner?.Ad @r.Veteriner?.Soyad</td>
+                            <td>
+                                @if (r.Tarih < DateTime.Now)
+                                {
+                                    @r.Hastalik
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark">Randevu Bekleniyor</span>
+                                }
+                            </td>
+                            <td>
+                                @if (r.Tarih < DateTime.Now)
+                                {
+                                    @r.Tedavi
+                                }
+                                else
+                                {
+                                    <span>-</span>
+                                }
+                            </td>
+                            <td>
+                                @if (r.Tarih < DateTime.Now)
+                                {
+                                    @r.Ucret?.ToString("C2", new System.Globalization.CultureInfo("tr-TR"))
+                                }
+                                else
+                                {
+                                    <span>-</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

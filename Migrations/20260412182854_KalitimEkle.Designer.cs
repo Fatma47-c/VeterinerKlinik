@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VeterinerKlinik.Models;
 
@@ -11,9 +12,11 @@ using VeterinerKlinik.Models;
 namespace VeterinerKlinik.Migrations
 {
     [DbContext(typeof(VeterinerKlinikContext))]
-    partial class VeterinerKlinikContextModelSnapshot : ModelSnapshot
+    [Migration("20260412182854_KalitimEkle")]
+    partial class KalitimEkle
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -167,23 +170,23 @@ namespace VeterinerKlinik.Migrations
                         new
                         {
                             Id = 1,
-                            Ad = "Uzm. Vet. Hek. Selin",
+                            Ad = "Uzm.Vet.Hek. Selin",
                             Soyad = "Yılmaz",
-                            UzmanlikAlani = "Evcil Hayvanlar"
+                            UzmanlikAlani = "Küçük Hayvanları"
                         },
                         new
                         {
                             Id = 2,
-                            Ad = "Vet. Hek. Ahmet",
+                            Ad = "Vet.Hek. Ahmet",
                             Soyad = "Demir",
                             UzmanlikAlani = "Çiftlik Hayvanları"
                         },
                         new
                         {
                             Id = 3,
-                            Ad = "Dr. Med. Vet. Murat",
+                            Ad = "Dr.Med.Vet. Murat",
                             Soyad = "Aydın",
-                            UzmanlikAlani = "Egzotik Hayvanlar"
+                            UzmanlikAlani = "Egzotik Hayvanları"
                         });
                 });
 
