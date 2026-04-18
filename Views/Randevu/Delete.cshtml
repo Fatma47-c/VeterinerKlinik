@@ -4,37 +4,38 @@
     ViewData["Title"] = "Randevu Sil";
 }
 
-<h2>Randevuyu Sil</h2>
-
-<div class="alert alert-danger">
-    <strong>@Model.MusteriAdi</strong> adlı müşterinin randevusunu silmek istediğinize emin misiniz?
+<div class="container mt-4" style="max-width:600px;">
+    <div class="card shadow border-0">
+        <div class="card-header bg-danger text-white text-center py-3">
+            <h4 class="mb-0">🗑️ Randevu Sil</h4>
+        </div>
+        <div class="card-body p-4">
+            <div class="alert alert-danger">
+                <strong>@Model.MusteriAdi</strong> adlı müşterinin randevusunu silmek istediğinize emin misiniz?
+            </div>
+            <dl class="row">
+                <dt class="col-sm-4">Tarih</dt>
+                <dd class="col-sm-8">@Model.Tarih.ToString("dd.MM.yyyy HH:mm")</dd>
+                <dt class="col-sm-4">Müşteri Adı</dt>
+                <dd class="col-sm-8">@Model.MusteriAdi</dd>
+                <dt class="col-sm-4">Telefon</dt>
+                <dd class="col-sm-8">@Model.Telefon</dd>
+                <dt class="col-sm-4">Hayvan Türü</dt>
+                <dd class="col-sm-8">@Model.HayvanTuru</dd>
+                <dt class="col-sm-4">Hayvan Cinsi</dt>
+                <dd class="col-sm-8">@Model.HayvanCinsi</dd>
+                <dt class="col-sm-4">Veteriner</dt>
+                <dd class="col-sm-8">@Model.Veteriner?.Ad @Model.Veteriner?.Soyad</dd>
+                <dt class="col-sm-4">Açıklama</dt>
+                <dd class="col-sm-8">@Model.Aciklama</dd>
+            </dl>
+            <form method="post" asp-action="Delete">
+                <input type="hidden" name="id" value="@Model.Id" />
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-danger w-100">✅ Evet, Sil</button>
+                    <a asp-action="Index" class="btn btn-secondary w-100">❌ İptal</a>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
-
-<dl class="row">
-    <dt class="col-sm-3">Tarih</dt>
-    <dd class="col-sm-9">@Model.Tarih.ToString("dd.MM.yyyy HH:mm")</dd>
-
-    <dt class="col-sm-3">Müşteri Adı</dt>
-    <dd class="col-sm-9">@Model.MusteriAdi</dd>
-
-    <dt class="col-sm-3">Telefon</dt>
-    <dd class="col-sm-9">@Model.Telefon</dd>
-
-    <dt class="col-sm-3">Hayvan Türü</dt>
-    <dd class="col-sm-9">@Model.HayvanTuru</dd>
-
-    <dt class="col-sm-3">Hayvan Cinsi</dt>
-    <dd class="col-sm-9">@Model.HayvanCinsi</dd>
-
-    <dt class="col-sm-3">Veteriner</dt>
-    <dd class="col-sm-9">@Model.Veteriner?.Ad @Model.Veteriner?.Soyad</dd>
-
-    <dt class="col-sm-3">Açıklama</dt>
-    <dd class="col-sm-9">@Model.Aciklama</dd>
-</dl>
-
-<form method="post">
-    <input type="hidden" name="id" value="@Model.Id" />
-    <button type="submit" class="btn btn-danger">Evet, Sil</button>
-    <a asp-action="Index" class="btn btn-secondary">İptal</a>
-</form>

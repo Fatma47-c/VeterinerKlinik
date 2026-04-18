@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VeterinerKlinik.Models;
 
@@ -11,9 +12,11 @@ using VeterinerKlinik.Models;
 namespace VeterinerKlinik.Migrations
 {
     [DbContext(typeof(VeterinerKlinikContext))]
-    partial class VeterinerKlinikContextModelSnapshot : ModelSnapshot
+    [Migration("20260414115128_SeedVerileriniSil")]
+    partial class SeedVerileriniSil
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,11 +27,11 @@ namespace VeterinerKlinik.Migrations
 
             modelBuilder.Entity("VeterinerKlinik.Models.Hayvan", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
 
                     b.Property<string>("Ad")
                         .HasColumnType("nvarchar(max)");
@@ -60,6 +63,33 @@ namespace VeterinerKlinik.Migrations
                     b.HasDiscriminator<string>("HayvanTipi").HasValue("Hayvan");
 
                     b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("VeterinerKlinik.Models.Muayene", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("HayvanId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Tarih")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Teshis")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Ucret")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HayvanId");
+
+                    b.ToTable("Muayeneler");
                 });
 
             modelBuilder.Entity("VeterinerKlinik.Models.Randevu", b =>
@@ -116,30 +146,12 @@ namespace VeterinerKlinik.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Ad")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Cinsiyet")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("DeneyimYili")
-                        .HasColumnType("int");
 
                     b.Property<string>("Soyad")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Universite")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Unvan")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UzmanlikAlani")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -166,6 +178,17 @@ namespace VeterinerKlinik.Migrations
                     b.HasBaseType("VeterinerKlinik.Models.Hayvan");
 
                     b.HasDiscriminator().HasValue("Evcil");
+                });
+
+            modelBuilder.Entity("VeterinerKlinik.Models.Muayene", b =>
+                {
+                    b.HasOne("VeterinerKlinik.Models.Hayvan", "Hayvan")
+                        .WithMany()
+                        .HasForeignKey("HayvanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Hayvan");
                 });
 
             modelBuilder.Entity("VeterinerKlinik.Models.Randevu", b =>

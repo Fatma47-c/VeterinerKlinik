@@ -1,0 +1,55 @@
+﻿@model List<VeterinerKlinik.Models.Veteriner>
+
+@{
+    ViewData["Title"] = "Admin Panel";
+}
+
+<div class="container mt-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">⚙️ Admin Panel</h2>
+        <a asp-action="AdminCikis" class="btn btn-outline-danger">🚪 Çıkış</a>
+    </div>
+
+    <div class="mb-3">
+        <a asp-action="Create" class="btn btn-success">➕ Yeni Veteriner</a>
+    </div>
+
+    <div class="card shadow border-0">
+        <div class="card-body">
+            <table class="table table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Ad Soyad</th>
+                        <th>Uzmanlık</th>
+                        <th>Üniversite</th>
+                        <th>Deneyim</th>
+                        <th>İşlem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var v in Model)
+                    {
+                        <tr>
+                            <td>@v.Ad @v.Soyad</td>
+                            <td>@v.UzmanlikAlani</td>
+                            <td>@v.Universite</td>
+                            <td>@v.DeneyimYili yıl</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@v.Id"
+                                   class="btn btn-sm btn-warning">✏️</a>
+                                <form asp-action="Delete" asp-route-id="@v.Id"
+                                      method="post" style="display:inline;">
+                                    <button class="btn btn-sm btn-danger"
+                                            onclick="return confirm('Bu veterineri silmek istediğinize emin misiniz?')">
+                                        🗑️ Sil
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -4,37 +4,45 @@
     ViewData["Title"] = "Hayvanlar";
 }
 
-<h2>Hayvanlar</h2>
-<a asp-action="Create" class="btn btn-primary mb-3">+ Yeni Hayvan</a>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">🐾 Hayvanlar</h2>
+        <a asp-action="Create" class="btn btn-success">➕ Yeni Hayvan</a>
+    </div>
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Ad</th>
-            <th>Kategori</th>
-            <th>Tür</th>
-            <th>Cins</th>
-            <th>Yaş</th>
-            <th>Müşteri</th>
-            <th>İşlem</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var h in Model)
-        {
-            <tr>
-                <td>@h.Ad</td>
-                <td>@h.Kategori</td>
-                <td>@h.Tur</td>
-                <td>@h.Cins</td>
-                <td>@h.Yas</td>
-                <td>@h.MusteriAdi</td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@h.Id" class="btn btn-sm btn-secondary">Detay</a>
-                    <a asp-action="Edit" asp-route-id="@h.Id" class="btn btn-sm btn-warning">Düzenle</a>
-                    <a asp-action="Delete" asp-route-id="@h.Id" class="btn btn-sm btn-danger">Sil</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+    <div class="card shadow border-0">
+        <div class="card-body">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Ad</th>
+                        <th>Kategori</th>
+                        <th>Tür</th>
+                        <th>Cins</th>
+                        <th>Yaş</th>
+                        <th>Müşteri</th>
+                        <th>İşlem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var h in Model)
+                    {
+                        <tr>
+                            <td>@h.Ad</td>
+                            <td>@h.Kategori</td>
+                            <td>@h.Tur</td>
+                            <td>@h.Cins</td>
+                            <td>@h.Yas</td>
+                            <td>@h.MusteriAdi</td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@h.Id" class="btn btn-sm btn-secondary">🔍 Detay</a>
+                                <a asp-action="Edit" asp-route-id="@h.Id" class="btn btn-sm btn-warning">✏️ Düzenle</a>
+                                <a asp-action="Delete" asp-route-id="@h.Id" class="btn btn-sm btn-danger">🗑️ Sil</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

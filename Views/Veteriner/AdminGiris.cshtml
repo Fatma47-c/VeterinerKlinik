@@ -1,0 +1,20 @@
+﻿@{
+    ViewData["Title"] = "Yönetici Girişi";
+}
+
+<div class="container mt-5" style="max-width:400px;">
+    <div class="card shadow p-4">
+        <h4 class="fw-bold text-center mb-4">🔐 Yönetici Girişi</h4>
+        @if (ViewBag.Hata != null)
+        {
+            <div class="alert alert-danger">@ViewBag.Hata</div>
+        }
+        <form method="post" asp-action="AdminGiris">
+            <div class="mb-3">
+                <label>Şifre</label>
+                <input type="password" name="sifre" class="form-control" />
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Giriş Yap</button>
+        </form>
+    </div>
+</div>

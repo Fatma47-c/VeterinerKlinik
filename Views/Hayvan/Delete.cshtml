@@ -21,7 +21,7 @@
     <dd class="col-sm-9">@Model.Tur</dd>
 </dl>
 
-<form method="post">
+<form method="post" asp-action="Delete">
     <input type="hidden" name="id" value="@Model.Id" />
     <button type="submit" class="btn btn-danger">Evet, Sil</button>
     <a asp-action="Index" class="btn btn-secondary">İptal</a>

@@ -4,70 +4,78 @@
     ViewData["Title"] = "Randevular";
 }
 
-<h2>Randevular</h2>
-<a asp-action="Create" class="btn btn-primary mb-3">+ Yeni Randevu</a>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">📅 Randevular</h2>
+        <a asp-action="Create" class="btn btn-success">➕ Yeni Randevu</a>
+    </div>
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Tarih</th>
-            <th>Müşteri Adı</th>
-            <th>Telefon</th>
-            <th>Hayvan Türü</th>
-            <th>Hayvan Cinsi</th>
-            <th>Veteriner</th>
-            <th>Teşhis</th>
-            <th>Tedavi</th>
-            <th>Ücret</th>
-            <th>Açıklama</th>
-            <th>İşlem</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var r in Model)
-        {
-            <tr>
-                <td>@r.Tarih.ToString("dd.MM.yyyy HH:mm")</td>
-                <td>@r.MusteriAdi</td>
-                <td>@r.Telefon</td>
-                <td>@r.HayvanTuru</td>
-                <td>@r.HayvanCinsi</td>
-                <td>@r.Veteriner?.Ad @r.Veteriner?.Soyad</td>
-                <td>
-                    @if (r.Tarih < DateTime.Now)
+    <div class="card shadow border-0">
+        <div class="card-body">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Tarih</th>
+                        <th>Müşteri Adı</th>
+                        <th>Telefon</th>
+                        <th>Hayvan Türü</th>
+                        <th>Hayvan Cinsi</th>
+                        <th>Veteriner</th>
+                        <th>Teşhis</th>
+                        <th>Tedavi</th>
+                        <th>Ücret</th>
+                        <th>Açıklama</th>
+                        <th>İşlem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var r in Model)
                     {
-                        @r.Hastalik
+                        <tr>
+                            <td>@r.Tarih.ToString("dd.MM.yyyy HH:mm")</td>
+                            <td>@r.MusteriAdi</td>
+                            <td>@r.Telefon</td>
+                            <td>@r.HayvanTuru</td>
+                            <td>@r.HayvanCinsi</td>
+                            <td>@r.Veteriner?.Ad @r.Veteriner?.Soyad</td>
+                            <td>
+                                @if (r.Tarih < DateTime.Now)
+                                {
+                                    @r.Hastalik
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark">Randevu Bekleniyor</span>
+                                }
+                            </td>
+                            <td>
+                                @if (r.Tarih < DateTime.Now)
+                                {
+                                    @r.Tedavi
+                                }
+                                else
+                                {
+                                    <span>-</span>
+                                }
+                            </td>
+                            <td>
+                                @if (r.Tarih < DateTime.Now)
+                                {
+                                    @r.Ucret?.ToString("C2", new System.Globalization.CultureInfo("tr-TR"))
+                                }
+                                else
+                                {
+                                    <span>-</span>
+                                }
+                            </td>
+                            <td>@r.Aciklama</td>
+                            <td>
+                                <a asp-action="Delete" asp-route-id="@r.Id" class="btn btn-sm btn-danger">🗑️ Sil</a>
+                            </td>
+                        </tr>
                     }
-                    else
-                    {
-                        <span class="badge bg-warning text-dark">Randevu Bekleniyor</span>
-                    }
-                </td>
-                <td>
-                    @if (r.Tarih < DateTime.Now)
-                    {
-                        @r.Tedavi
-                    }
-                    else
-                    {
-                        <span>-</span>
-                    }
-                </td>
-                <td>
-                    @if (r.Tarih < DateTime.Now)
-                    {
-                        @r.Ucret?.ToString("C2", new System.Globalization.CultureInfo("tr-TR"))
-                    }
-                    else
-                    {
-                        <span>-</span>
-                    }
-                </td>
-                <td>@r.Aciklama</td>
-                <td>
-                    <a asp-action="Delete" asp-route-id="@r.Id" class="btn btn-sm btn-danger">Sil</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -2,7 +2,7 @@
 {
     public abstract class Hayvan
     {
-        public int? Id { get; set; }
+        public int Id { get; set; }
         public string? Ad { get; set; }
         public int? Yas { get; set; }
         public string? Kategori { get; set; }

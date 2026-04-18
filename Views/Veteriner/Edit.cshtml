@@ -1,0 +1,45 @@
+﻿@model VeterinerKlinik.Models.Veteriner
+
+@{
+    ViewData["Title"] = "Veteriner Düzenle";
+}
+
+<div class="container mt-4">
+    <h2 class="fw-bold mb-4">✏️ Veteriner Düzenle</h2>
+    <form asp-action="Edit" method="post" autocomplete="off">
+        <input type="hidden" asp-for="Id" />
+        <div class="mb-3">
+            <label>Ad</label>
+            <input asp-for="Ad" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label>Soyad</label>
+            <input asp-for="Soyad" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label>Uzmanlık Alanı</label>
+            <input asp-for="UzmanlikAlani" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label>Üniversite</label>
+            <input asp-for="Universite" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label>Deneyim Yılı</label>
+            <input asp-for="DeneyimYili" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label>Unvan</label>
+            <input asp-for="Unvan" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label>Cinsiyet</label>
+            <select asp-for="Cinsiyet" class="form-control">
+                <option value="E">Erkek 👨‍⚕️</option>
+                <option value="K">Kadın 👩‍⚕️</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Güncelle</button>
+        <a asp-action="AdminPanel" class="btn btn-secondary">İptal</a>
+    </form>
+</div>
