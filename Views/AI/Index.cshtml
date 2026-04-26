@@ -1,0 +1,63 @@
+﻿@{
+    ViewData["Title"] = "AI Veteriner Asistanı";
+}
+
+<div class="container mt-5">
+    <div class="card shadow border-0" style="border-radius: 15px;">
+        <div class="card-header bg-success text-white py-3" style="border-radius: 15px 15px 0 0;">
+            <h3 class="mb-0 text-center">🐾 Veteriner Akıllı Asistan</h3>
+        </div>
+        <div class="card-body" id="chatWindow" style="height: 450px; overflow-y: auto; background-color: #f8f9fa;">
+            <div class="text-center p-4">
+                <span class="badge bg-light text-secondary border">Yapay zeka ile sohbetiniz başlıyor...</span>
+            </div>
+        </div>
+        <div class="card-footer bg-white border-top-0" style="border-radius: 0 0 15px 15px;">
+            <div class="input-group mb-3">
+                <input type="text" id="userInput" class="form-control border-success" placeholder="Sorunuzu buraya yazın..." style="border-radius: 20px 0 0 20px;">
+                <button class="btn btn-success px-4" onclick="mesajGonder()" style="border-radius: 0 20px 20px 0;">Gönder</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function mesajGonder() {
+        let input = document.getElementById("userInput");
+        let chat = document.getElementById("chatWindow");
+        let mesaj = input.value;
+        if (!mesaj.trim()) return;
+
+        // Kullanıcı mesajı
+        chat.innerHTML += `<div class='d-flex justify-content-end mb-3'>
+            <div class='p-3 bg-primary text-white shadow-sm' style='max-width: 80%; border-radius: 15px 15px 0 15px;'>${mesaj}</div>
+        </div>`;
+        input.value = "";
+        chat.scrollTop = chat.scrollHeight;
+
+        // Yükleniyor ikonu
+        let loaderId = "loader_" + Date.now();
+        chat.innerHTML += `<div id='${loaderId}' class='text-secondary mb-3 ms-2'><em>Asistan düşünüyor...</em></div>`;
+    try {
+        const response = await fetch('/AI/SoruSor', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: 'mesaj=' + encodeURIComponent(mesaj)
+        });
+
+        if (!response.ok) {
+            throw new Error('Sunucu hatası: ' + response.status);
+        }
+
+        const data = await response.json();
+            
+            document.getElementById(loaderId).remove();
+            chat.innerHTML += `<div class='d-flex justify-content-start mb-3'>
+                <div class='p-3 bg-white text-dark border shadow-sm' style='max-width: 80%; border-radius: 15px 15px 15px 0;'><strong>🤖 Asistan:</strong><br>${data.cevap}</div>
+            </div>`;
+        } catch (error) {
+            document.getElementById(loaderId).innerText = "Bir hata oluştu. Lütfen tekrar deneyin.";
+        }
+        chat.scrollTop = chat.scrollHeight;
+    }
+</script>s

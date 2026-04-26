@@ -17,6 +17,8 @@ namespace VeterinerKlinik
                 options.UseSqlServer(
                     builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            builder.Services.AddScoped<VeterinerAsistanServisi>();
+
             var app = builder.Build();
 
             if (!app.Environment.IsDevelopment())
