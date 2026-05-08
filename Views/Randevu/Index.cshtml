@@ -18,8 +18,8 @@
                         <th>Tarih</th>
                         <th>Müşteri Adı</th>
                         <th>Telefon</th>
+                        <th>Kategori</th>
                         <th>Hayvan Türü</th>
-                        <th>Hayvan Cinsi</th>
                         <th>Veteriner</th>
                         <th>Teşhis</th>
                         <th>Tedavi</th>
@@ -35,8 +35,8 @@
                             <td>@r.Tarih.ToString("dd.MM.yyyy HH:mm")</td>
                             <td>@r.MusteriAdi</td>
                             <td>@r.Telefon</td>
+                            <td>@r.HayvanKategorisi</td>
                             <td>@r.HayvanTuru</td>
-                            <td>@r.HayvanCinsi</td>
                             <td>@r.Veteriner?.Ad @r.Veteriner?.Soyad</td>
                             <td>
                                 @if (r.Tarih < DateTime.Now)

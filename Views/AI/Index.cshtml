@@ -2,62 +2,101 @@
     ViewData["Title"] = "AI Veteriner Asistanı";
 }
 
-<div class="container mt-5">
-    <div class="card shadow border-0" style="border-radius: 15px;">
-        <div class="card-header bg-success text-white py-3" style="border-radius: 15px 15px 0 0;">
-            <h3 class="mb-0 text-center">🐾 Veteriner Akıllı Asistan</h3>
+<div class="container mt-4">
+    <div class="card shadow-lg border-0" style="border-radius: 25px; overflow: hidden;">
+        
+        <div class="card-header py-4 text-white text-center"
+             style="background: linear-gradient(135deg, #2d6a4f, #52b788); border-radius: 0;">
+            <div style="font-size: 50px;">🐾</div>
+            <h3 class="fw-bold mb-1">Veteriner Akıllı Asistan</h3>
+            <p class="mb-0 opacity-75" style="font-size: 14px;">🐶 🐱 🐰 🐦 Dostlarınız için buradayım! 🐠 🦎 🐄 🐓</p>
         </div>
-        <div class="card-body" id="chatWindow" style="height: 450px; overflow-y: auto; background-color: #f8f9fa;">
-            <div class="text-center p-4">
-                <span class="badge bg-light text-secondary border">Yapay zeka ile sohbetiniz başlıyor...</span>
+
+        <div class="card-body p-4" id="chatWindow"
+             style="height: 450px; overflow-y: auto; background: linear-gradient(180deg, #f0faf4, #e8f5e9);">
+            
+            <div class="d-flex justify-content-start mb-3">
+                <div class="p-3 text-dark border-0 shadow-sm"
+                     style="max-width: 80%; border-radius: 20px 20px 20px 0; background: white;">
+                    <strong>🤖 Asistan:</strong><br>
+                    Merhaba! Ben veteriner asistanınım 🐾 Dostlarınızın sağlığı hakkında her türlü sorunuzu sorabilirsiniz!
+                </div>
             </div>
+
         </div>
-        <div class="card-footer bg-white border-top-0" style="border-radius: 0 0 15px 15px;">
-            <div class="input-group mb-3">
-                <input type="text" id="userInput" class="form-control border-success" placeholder="Sorunuzu buraya yazın..." style="border-radius: 20px 0 0 20px;">
-                <button class="btn btn-success px-4" onclick="mesajGonder()" style="border-radius: 0 20px 20px 0;">Gönder</button>
+
+        <div class="card-footer border-0 p-3"
+             style="background: linear-gradient(135deg, #2d6a4f, #52b788);">
+            <div class="input-group">
+                <input type="text" id="userInput" class="form-control border-0 px-4"
+                       placeholder="🐾 Sorunuzu buraya yazın..."
+                       style="border-radius: 25px 0 0 25px; font-size: 15px; box-shadow: none;">
+                <button class="btn btn-light fw-bold px-4" onclick="mesajGonder()"
+                        style="border-radius: 0 25px 25px 0; color: #2d6a4f;">
+                    Gönder ➤
+                </button>
+            </div>
+            <div class="text-center mt-2">
             </div>
         </div>
     </div>
 </div>
 
 <script>
+    document.getElementById("userInput").addEventListener("keypress", function(e) {
+        if (e.key === "Enter") mesajGonder();
+    });
+
     async function mesajGonder() {
         let input = document.getElementById("userInput");
         let chat = document.getElementById("chatWindow");
         let mesaj = input.value;
         if (!mesaj.trim()) return;
 
-        // Kullanıcı mesajı
-        chat.innerHTML += `<div class='d-flex justify-content-end mb-3'>
-            <div class='p-3 bg-primary text-white shadow-sm' style='max-width: 80%; border-radius: 15px 15px 0 15px;'>${mesaj}</div>
-        </div>`;
+        chat.innerHTML += `
+            <div class='d-flex justify-content-end mb-3'>
+                <div class='p-3 text-white shadow-sm'
+                     style='max-width: 80%; border-radius: 20px 20px 0 20px; background: linear-gradient(135deg, #2d6a4f, #52b788);'>
+                    ${mesaj}
+                </div>
+            </div>`;
         input.value = "";
         chat.scrollTop = chat.scrollHeight;
 
-        // Yükleniyor ikonu
         let loaderId = "loader_" + Date.now();
-        chat.innerHTML += `<div id='${loaderId}' class='text-secondary mb-3 ms-2'><em>Asistan düşünüyor...</em></div>`;
-    try {
-        const response = await fetch('/AI/SoruSor', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: 'mesaj=' + encodeURIComponent(mesaj)
-        });
-
-        if (!response.ok) {
-            throw new Error('Sunucu hatası: ' + response.status);
-        }
-
-        const data = await response.json();
-            
-            document.getElementById(loaderId).remove();
-            chat.innerHTML += `<div class='d-flex justify-content-start mb-3'>
-                <div class='p-3 bg-white text-dark border shadow-sm' style='max-width: 80%; border-radius: 15px 15px 15px 0;'><strong>🤖 Asistan:</strong><br>${data.cevap}</div>
+        chat.innerHTML += `
+            <div id='${loaderId}' class='d-flex justify-content-start mb-3'>
+                <div class='p-3 text-muted shadow-sm'
+                     style='border-radius: 20px 20px 20px 0; background: white;'>
+                    🐾 <em>Asistan düşünüyor...</em>
+                </div>
             </div>`;
+        chat.scrollTop = chat.scrollHeight;
+
+        try {
+            const response = await fetch('/AI/SoruSor', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'mesaj=' + encodeURIComponent(mesaj)
+            });
+
+            if (!response.ok) throw new Error('Sunucu hatası: ' + response.status);
+
+            const data = await response.json();
+            document.getElementById(loaderId).remove();
+            chat.innerHTML += `
+                <div class='d-flex justify-content-start mb-3'>
+                    <div class='p-3 text-dark shadow-sm'
+                         style='max-width: 80%; border-radius: 20px 20px 20px 0; background: white;'>
+                        <strong>🤖 Asistan:</strong><br>${data.cevap}
+                    </div>
+                </div>`;
         } catch (error) {
-            document.getElementById(loaderId).innerText = "Bir hata oluştu. Lütfen tekrar deneyin.";
+            document.getElementById(loaderId).innerHTML = `
+                <div class='p-3 text-danger' style='background: white; border-radius: 20px;'>
+                    ❌ Bir hata oluştu. Lütfen tekrar deneyin.
+                </div>`;
         }
         chat.scrollTop = chat.scrollHeight;
     }
-</script>s
+</script>

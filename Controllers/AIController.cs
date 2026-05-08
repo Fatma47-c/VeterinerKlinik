@@ -7,38 +7,32 @@ namespace VeterinerKlinik.Controllers
     {
         private readonly VeterinerAsistanServisi _asistanServisi;
 
-        // Yapay zeka servisini buraya bağlıyoruz
         public AIController(VeterinerAsistanServisi asistanServisi)
         {
             _asistanServisi = asistanServisi;
         }
 
-        // Sayfayı ekrana getirir
         public IActionResult Index()
         {
             return View();
         }
 
         [HttpPost]
-        [Route("SoruSor")] // Yolu garantiye alıyoruz
+        [Route("SoruSor")]
         public async Task<JsonResult> SoruSor([FromForm] string mesaj)
         {
+            if (string.IsNullOrWhiteSpace(mesaj))
+                return Json(new { cevap = "Boş mesaj gönderilemez." });
+
             try
             {
-                if (string.IsNullOrWhiteSpace(mesaj))
-                    return Json(new { cevap = "Boş mesaj gönderilemez." });
-
-                // Gemini'den cevabı alıyoruz
-                string asistanYaniti = await _asistanServisi.SoruSor(mesaj);
-
-                // JSON dönerken isimlendirmeyi zorla küçük harf yapıyoruz
-                return Json(new { cevap = asistanYaniti });
+                string yanit = await _asistanServisi.SoruSor(mesaj);
+                return Json(new { cevap = yanit });
             }
             catch (Exception ex)
             {
-                // Hata olursa sebebini ekrana yazdırır
                 return Json(new { cevap = "Hata: " + ex.Message });
             }
         }
     }
-    }
+}

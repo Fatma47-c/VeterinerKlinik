@@ -9,17 +9,10 @@ namespace VeterinerKlinik.Models
         {
         }
 
-        public DbSet<Hayvan> Hayvanlar => Set<Hayvan>();
         public DbSet<Randevu> Randevular => Set<Randevu>();
         public DbSet<Veteriner> Veterinerler => Set<Veteriner>();
+        public DbSet<Hastalik> Hastaliklar => Set<Hastalik>();
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Hayvan>()
-                .HasDiscriminator<string>("HayvanTipi")
-                .HasValue<EvcilHayvan>("Evcil")
-                .HasValue<CiftlikHayvani>("Çiftlik")
-                .HasValue<EgzotikHayvan>("Egzotik");
-        }
+        
     }
 }
