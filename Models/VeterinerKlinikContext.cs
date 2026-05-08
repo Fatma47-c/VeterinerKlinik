@@ -13,6 +13,15 @@ namespace VeterinerKlinik.Models
         public DbSet<Veteriner> Veterinerler => Set<Veteriner>();
         public DbSet<Hastalik> Hastaliklar => Set<Hastalik>();
 
-        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Hastalik>()
+                .Property(h => h.Ucret)
+                .HasPrecision(18, 2);
+
+            modelBuilder.Entity<Randevu>()
+                .Property(r => r.Ucret)
+                .HasPrecision(18, 2);
+        }
     }
 }
