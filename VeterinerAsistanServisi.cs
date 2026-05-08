@@ -5,8 +5,13 @@ namespace VeterinerKlinik
 {
     public class VeterinerAsistanServisi
     {
-        private readonly string _apiKey = "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";
+        private readonly string _apiKey;
         private readonly HttpClient _httpClient = new HttpClient();
+
+        public VeterinerAsistanServisi(IConfiguration configuration)
+        {
+            _apiKey = configuration["Groq:ApiKey"] ?? "";
+        }
 
         public async Task<string> SoruSor(string kullaniciMesaji)
         {
