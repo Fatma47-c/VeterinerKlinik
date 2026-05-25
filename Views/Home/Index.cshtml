@@ -1,101 +1,210 @@
-﻿@model List<VeterinerKlinik.Models.Randevu>
+﻿@model VeterinerKlinik.Models.DashboardViewModel
 
 @{
-    ViewData["Title"] = "Ana Sayfa";
-    var bugunRandevular = Model.Count(r => r.Tarih.Date == DateTime.Today);
-    var toplamRandevu = Model.Count;
+    ViewData["Title"] = "Dashboard";
 }
 
-<div class="text-center py-4 mb-4">
-    <h1 class="fw-bold">🐾 Veteriner Kliniğine Hoş Geldiniz</h1>
-    <p class="text-muted fs-5">"Dostlarınızın sağlığı bizim önceliğimiz"</p>
+<!-- İstatistik Kartları -->
+<div class="row mb-4 g-3">
+    <div class="col-md-2">
+        <div class="card text-white bg-success h-100">
+            <div class="card-body py-3">
+                <h6 class="card-title">📅 Bugünkü Randevu</h6>
+                <h3 class="mb-0">@Model.BugunkuRandevuSayisi</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card text-white bg-primary h-100">
+            <div class="card-body py-3">
+                <h6 class="card-title">📅 Toplam Randevu</h6>
+                <h3 class="mb-0">@Model.ToplamRandevuSayisi</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card text-white bg-warning h-100">
+            <div class="card-body py-3">
+                <h6 class="card-title">👥 Müşteri</h6>
+                <h3 class="mb-0">@Model.ToplamMusteriSayisi</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card text-white bg-danger h-100">
+            <div class="card-body py-3">
+                <h6 class="card-title">🏥 Muayene</h6>
+                <h3 class="mb-0">@Model.ToplamMuayeneSayisi</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card text-white bg-info h-100">
+            <div class="card-body py-3">
+                <h6 class="card-title">👨‍⚕️ Veteriner</h6>
+                <h3 class="mb-0">@Model.ToplamVeterinerSayisi</h3>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="row text-center mb-4">
+<!-- Gelir Kartları Yan Yana -->
+<div class="row mb-4 g-3">
     <div class="col-md-6">
-        <div class="card shadow border-0 py-3" style="border-radius:16px; background: linear-gradient(135deg, #78c2ad, #56a08a);">
-            <div class="card-body">
-                <h2 class="text-white fw-bold">@toplamRandevu</h2>
-                <p class="text-white mb-0">📅 Toplam Randevu</p>
+        <div class="card text-white bg-success h-100">
+            <div class="card-body py-3">
+                <h6 class="card-title">💰 Bugünkü Gelir</h6>
+                <h4 class="mb-0">@Model.BugunkuGelir.ToString("C2")</h4>
             </div>
         </div>
     </div>
     <div class="col-md-6">
-        <div class="card shadow border-0 py-3" style="border-radius:16px; background: linear-gradient(135deg, #56a08a, #3d8b72);">
-            <div class="card-body">
-                <h2 class="text-white fw-bold">@bugunRandevular</h2>
-                <p class="text-white mb-0">🌟 Bugünkü Randevular</p>
+        <div class="card text-white bg-secondary h-100">
+            <div class="card-body py-3">
+                <h6 class="card-title">💰 Toplam Gelir</h6>
+                <h4 class="mb-0">@Model.ToplamGelir.ToString("C2")</h4>
             </div>
         </div>
     </div>
 </div>
 
-<h4 class="mb-3">📋 Randevular</h4>
+<!-- Bugünkü Randevular -->
+<div class="row mb-4 g-3">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">📋 Bugünkü Randevular</h5>
+            </div>
+            <div class="card-body">
+                @if (Model.BugunkuRandevular.Any())
+                {
+                    <table class="table table-striped mb-0">
+                        <thead>
+                            <tr>
+                                <th>Saat</th>
+                                <th>Müşteri</th>
+                                <th>Hayvan</th>
+                                <th>Veteriner</th>
+                                <th>Ücret</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var r in Model.BugunkuRandevular)
+                            {
+                                <tr>
+                                    <td>@r.Tarih.ToString("HH:mm")</td>
+                                    <td>@r.MusteriAdi</td>
+                                    <td>@r.HayvanTuru</td>
+                                    <td>@r.Veteriner?.Ad @r.Veteriner?.Soyad</td>
+                                    <td>@r.Ucret?.ToString("C2")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p class="text-muted mb-0">Bugün randevu bulunmamaktadır.</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
 
-@if (Model.Count == 0)
-{
-    <div class="alert alert-info">Henüz randevu bulunmamaktadır.</div>
-}
-else
-{
-    <div class="card shadow border-0" style="border-radius:16px;">
-        <div class="card-body p-0">
-            <table class="table table-bordered table-hover mb-0" style="border-radius:16px; overflow:hidden;">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Tarih</th>
-                        <th>Müşteri Adı</th>
-                        <th>Kategori</th>
-                        <th>Hayvan Türü</th>
-                        <th>Veteriner</th>
-                        <th>Teşhis</th>
-                        <th>Tedavi</th>
-                        <th>Ücret</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var r in Model)
-                    {
+<!-- Son Randevular ve Veterinerler -->
+<div class="row mb-4 g-3">
+    <div class="col-md-8">
+        <div class="card h-100">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0">🕐 Son Randevular</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-hover mb-0">
+                    <thead>
                         <tr>
-                            <td>@r.Tarih.ToString("dd.MM.yyyy HH:mm")</td>
-                            <td>@r.MusteriAdi</td>
-                            <td>@r.HayvanKategorisi</td>
-                            <td>@r.HayvanTuru</td>
-                            <td>@r.Veteriner?.Ad @r.Veteriner?.Soyad</td>
-                            <td>
-                                @if (r.Tarih < DateTime.Now)
-                                {
-                                    @r.Hastalik
-                                }
-                                else
-                                {
-                                    <span class="badge bg-warning text-dark">Randevu Bekleniyor</span>
-                                }
-                            </td>
-                            <td>
-                                @if (r.Tarih < DateTime.Now)
-                                {
-                                    @r.Tedavi
-                                }
-                                else
-                                {
-                                    <span>-</span>
-                                }
-                            </td>
-                            <td>
-                                @if (r.Tarih < DateTime.Now)
-                                {
-                                    @r.Ucret?.ToString("C2", new System.Globalization.CultureInfo("tr-TR"))
-                                }
-                                else
-                                {
-                                    <span>-</span>
-                                }
-                            </td>
+                            <th>Tarih</th>
+                            <th>Müşteri</th>
+                            <th>Hayvan</th>
+                            <th>Veteriner</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var r in Model.SonRandevular)
+                        {
+                            <tr>
+                                <td>@r.Tarih.ToString("dd.MM.yyyy HH:mm")</td>
+                                <td>@r.MusteriAdi</td>
+                                <td>@r.HayvanTuru</td>
+                                <td>@r.Veteriner?.Ad @r.Veteriner?.Soyad</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-}
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0">👨‍⚕️ Veterinerler</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    @foreach (var v in Model.Veterinerler)
+                    {
+                        <li class="list-group-item">
+                            <strong>@v.Unvan @v.Ad @v.Soyad</strong>
+                            <br />
+                            <small class="text-muted">@v.UzmanlikAlani</small>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Son Muayeneler -->
+<div class="row mb-4 g-3">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0">🏥 Son Muayeneler</h5>
+            </div>
+            <div class="card-body">
+                @if (Model.SonMuayeneler.Any())
+                {
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Tarih</th>
+                                <th>Hayvan</th>
+                                <th>Müşteri</th>
+                                <th>Veteriner</th>
+                                <th>Teşhis</th>
+                                <th>Ücret</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var m in Model.SonMuayeneler)
+                            {
+                                <tr>
+                                    <td>@m.Tarih.ToString("dd.MM.yyyy")</td>
+                                    <td>@m.HayvanAdi</td>
+                                    <td>@m.MusteriAdi</td>
+                                    <td>@m.Veteriner?.Ad @m.Veteriner?.Soyad</td>
+                                    <td>@m.Teshis</td>
+                                    <td>@m.Ucret.ToString("C2")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p class="text-muted mb-0">Henüz muayene kaydı bulunmamaktadır.</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>

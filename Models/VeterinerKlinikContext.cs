@@ -12,6 +12,7 @@ namespace VeterinerKlinik.Models
         public DbSet<Randevu> Randevular => Set<Randevu>();
         public DbSet<Veteriner> Veterinerler => Set<Veteriner>();
         public DbSet<Hastalik> Hastaliklar => Set<Hastalik>();
+        public DbSet<Muayene> Muayeneler => Set<Muayene>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -21,6 +22,10 @@ namespace VeterinerKlinik.Models
 
             modelBuilder.Entity<Randevu>()
                 .Property(r => r.Ucret)
+                .HasPrecision(18, 2);
+
+            modelBuilder.Entity<Muayene>()
+                .Property(m => m.Ucret)
                 .HasPrecision(18, 2);
         }
     }

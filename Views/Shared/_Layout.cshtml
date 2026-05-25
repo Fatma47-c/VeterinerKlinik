@@ -59,19 +59,65 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse">
+                    
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="Index">🏠 Ana Sayfa</a>
-                        </li>
-                        <li class="nav-item">
+
+                            <ul class="navbar-nav me-auto">
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Anasayfa" asp-action="Index">🏠 Ana Sayfa</a>
+                                </li>
+                                
                             <a class="nav-link" asp-controller="Randevu" asp-action="Index">📅 Randevular</a>
                         </li>
                         <li class="nav-item">
-                         <a class="nav-link" asp-controller="Veteriner" asp-action="Index">👨‍⚕️ Hekimlerimiz</a>
-                       </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" asp-controller="AI" asp-action="Index">🤖 Yapay Zeka</a>
+                            <a class="nav-link" asp-controller="Veteriner" asp-action="Index">👨‍⚕️ Hekimlerimiz</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="AI" asp-action="Index">🤖 Yapay Zeka</a>
+                        </li>
+                        @if (Context.Session.GetString("Admin") == "true")
+
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                                    🔧 Yönetim
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Home" asp-action="Index">
+                                            📊 Dashboard
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Muayene" asp-action="Index">
+                                            🏥 Muayeneler
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-controller="Veteriner" asp-action="AdminPanel">
+                                            ⚙️ Admin Panel
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <a class="dropdown-item text-danger" asp-controller="Veteriner" asp-action="AdminCikis">
+                                            🚪 Çıkış Yap
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+
+                        else
+
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Veteriner" asp-action="AdminGiris">
+                                    🔐 Yönetici Girişi
+                                </a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

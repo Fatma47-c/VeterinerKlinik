@@ -1,0 +1,212 @@
+﻿@{
+    ViewData["Title"] = "Ana Sayfa";
+}
+
+
+<div class="container px-4 px-md-5">
+
+<div class="hero-section text-center py-5 mb-5"
+         style="background:linear-gradient(135deg, #E8F5E9 100%,#1a5c38 0%;
+                border-radius: 20px; border: 2px solid #81c784;"
+    <div class="container py-4">
+        <div style="font-size: 4rem;">🐾</div>
+        <h1 class="display-4 fw-bold mb-3" style="color: #1b5e20;">
+            Veteriner Kliniği
+        </h1>
+        
+        <p class="mb-4" style="color: #388e3c;">
+            Sevgili dostlarınız için en iyi bakım, en güvenilir eller.
+        </p>
+        <div class="d-flex gap-3 justify-content-center">
+            <a asp-controller="Randevu" asp-action="Create"
+               class="btn btn-light btn-lg fw-bold px-4">
+                📅 Randevu Al
+            </a>
+            
+            <a href="#hakkimizda"
+              class="btn btn-outline-dark btn-lg px-4">
+              📖 Hakkımızda
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<div class="row g-3 mb-5 text-center">
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm py-3">
+            <div style="font-size:2rem">🏥</div>
+            <h3 class="fw-bold text-success">+5000</h3>
+            <p class="text-muted mb-0">Mutlu Hasta</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm py-3">
+            <div style="font-size:2rem">👨‍⚕️</div>
+            <h3 class="fw-bold text-success">10</h3>
+            <p class="text-muted mb-0">Uzman Veteriner</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm py-3">
+            <div style="font-size:2rem">⭐</div>
+            <h3 class="fw-bold text-success">15</h3>
+            <p class="text-muted mb-0">Yıllık Deneyim</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card border-0 shadow-sm py-3">
+            <div style="font-size:2rem">🕐</div>
+            <h3 class="fw-bold text-success">7/24</h3>
+            <p class="text-muted mb-0">Acil Hizmet</p>
+        </div>
+    </div>
+</div>
+
+
+<div id="hakkimizda" class="row align-items-center mb-5">
+    <div class="col-md-6">
+        <h2 class="fw-bold text-success mb-3">🏥 Hakkımızda</h2>
+        <p class="text-muted">
+            Veteriner Kliniği, 2010 yılından bu yana Van Tuşba'da
+            sevgili dostlarınıza en kaliteli veteriner hizmetini sunmaktadır.
+        </p>
+        <p class="text-muted">
+            Modern tıbbi ekipmanlarımız ve uzman kadromuzla köpek, kedi, kuş
+            ve diğer evcil hayvanlarınızın sağlığını korumak için buradayız.
+        </p>
+        <p class="text-muted">
+            Kliniğimizde genel muayene, aşılama, cerrahi operasyon, diş tedavisi,
+            laboratuvar hizmetleri ve acil bakım gibi geniş bir hizmet yelpazesi sunulmaktadır.
+        </p>
+        <div class="d-flex gap-3 mt-4">
+            <div class="text-center">
+                <div style="font-size:1.5rem">📞</div>
+                <small class="text-muted">0216 123 45 67</small>
+            </div>
+            <div class="text-center">
+                <div style="font-size:1.5rem">📧</div>
+                <small class="text-muted">info@veterinerklinigi.com.tr</small>
+            </div>
+            <div class="text-center">
+                <div style="font-size:1.5rem">🕐</div>
+                <small class="text-muted">08:00 - 20:00</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 text-center">
+        <div style="font-size: 10rem; line-height:1;">🐶🐱</div>
+        <div style="font-size: 6rem; line-height:1;">🐦🐹</div>
+    </div>
+</div>
+
+
+<div class="mb-5">
+    <h2 class="fw-bold text-success text-center mb-4">🦮 Hizmetlerimiz</h2>
+    <div class="row g-3">
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm text-center py-4 h-100">
+                <div style="font-size:2.5rem">💉</div>
+                <h5 class="fw-bold mt-2">Aşılama</h5>
+                <p class="text-muted small">
+                    Düzenli aşı takvimiyle dostlarınızı hastalıklardan koruyun.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm text-center py-4 h-100">
+                <div style="font-size:2.5rem">🔬</div>
+                <h5 class="fw-bold mt-2">Laboratuvar</h5>
+                <p class="text-muted small">
+                    Kan tahlili, idrar analizi ve diğer laboratuvar hizmetleri.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm text-center py-4 h-100">
+                <div style="font-size:2.5rem">🏥</div>
+                <h5 class="fw-bold mt-2">Cerrahi</h5>
+                <p class="text-muted small">
+                    Uzman cerrahlarımızla güvenli operasyon hizmetleri.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm text-center py-4 h-100">
+                <div style="font-size:2.5rem">🦷</div>
+                <h5 class="fw-bold mt-2">Diş Tedavisi</h5>
+                <p class="text-muted small">
+                    Profesyonel diş temizliği ve diş sağlığı hizmetleri.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm text-center py-4 h-100">
+                <div style="font-size:2.5rem">🛁</div>
+                <h5 class="fw-bold mt-2">Grooming</h5>
+                <p class="text-muted small">
+                    Tımar, yıkama ve bakım hizmetleri.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm text-center py-4 h-100">
+                <div style="font-size:2.5rem">📋</div>
+                <h5 class="fw-bold mt-2">Genel Muayene</h5>
+                <p class="text-muted small">
+                    Kapsamlı sağlık kontrolü ve periyodik muayene.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm text-center py-4 h-100">
+                <div style="font-size:2.5rem">📅</div>
+                <h5 class="fw-bold mt-2">Randevu Sistemi</h5>
+                <p class="text-muted small">
+                    Online randevu alarak bekleme sürenizi minimize edin.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="card border-0 shadow-sm mb-5" id="iletisim">
+    <div class="card-header bg-success text-white">
+        <h4 class="mb-0">📍 İletişim ve Konum</h4>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <ul class="list-unstyled">
+                    <li class="mb-3">
+                        <strong>📍 Adres:</strong><br />
+                        <span class="text-muted">
+                             Kampüs Cad. No:42 Daire:3, Tuşba / Van
+                        </span>
+                    </li>
+                    <li class="mb-3">
+                        <strong>📞 Telefon:</strong><br />
+                        <span class="text-muted">0216 123 45 67</span>
+                    </li>
+                    <li class="mb-3">
+                        <strong>📧 E-posta:</strong><br />
+                        <span class="text-muted">info@vetklinik.com.tr</span>
+                    </li>
+                    <li class="mb-3">
+                        <strong>🕐 Çalışma Saatleri:</strong><br />
+                        <span class="text-muted">
+                            Hafta içi: 08:00 - 20:00<br />
+                            Hafta sonu: 09:00 - 16:00<br />
+                            Acil: 7/24
+                        </span>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-6 text-center d-flex align-items-center justify-content-center">
+                <div style="font-size:6rem">🗺️</div>
+            </div>
+        </div>
+    </div>
+</div>
+</div> 

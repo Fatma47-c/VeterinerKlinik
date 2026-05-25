@@ -1,0 +1,80 @@
+﻿@model VeterinerKlinik.Models.Muayene
+
+@{
+    ViewData["Title"] = "Muayene Düzenle";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-warning text-dark">
+                    <h4>✏️ Muayene Düzenle</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Edit">
+                        <input type="hidden" asp-for="Id" />
+                        <div asp-validation-summary="ModelOnly"
+                             class="text-danger mb-3"></div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Hayvan Adı</label>
+                            <input asp-for="HayvanAdi" class="form-control" />
+                            <span asp-validation-for="HayvanAdi"
+                                  class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Müşteri Adı</label>
+                            <input asp-for="MusteriAdi" class="form-control" />
+                            <span asp-validation-for="MusteriAdi"
+                                  class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Veteriner</label>
+                            <select asp-for="VeterinerId"
+                                    asp-items="ViewBag.Veterinerler"
+                                    class="form-select">
+                                <option value="">-- Veteriner Seçin --</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Tarih</label>
+                            <input asp-for="Tarih" type="datetime-local"
+                                   class="form-control" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Teşhis</label>
+                            <textarea asp-for="Teshis" class="form-control"
+                                      rows="3"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Tedavi</label>
+                            <textarea asp-for="Tedavi" class="form-control"
+                                      rows="3"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Ücret (₺)</label>
+                            <input asp-for="Ucret" type="number"
+                                   class="form-control" step="0.01" />
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit"
+                                    class="btn btn-warning">
+                                Güncelle
+                            </button>
+                            <a asp-action="Index"
+                               class="btn btn-secondary">Geri Dön</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
